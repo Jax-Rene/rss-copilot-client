@@ -1,17 +1,137 @@
-# rss_copilot_client
+# RSS Copilot Client
 
-A new Flutter project.
+RSS Copilot 的 Flutter 客户端，面向 Mac / Android 的个人 AI RSS 阅读器体验。
 
-## Getting Started
+当前版本覆盖：
 
-This project is a starting point for a Flutter application.
+- 邮箱密码登录 RSS Copilot Server，登录页可一键填入本地演示账号，登录前自动健康检查并给出服务端地址/版本类排障提示，Bearer Token 本地持久化
+- Feed / 稍后读 / 噪音箱 / 订阅源 / 设置 / 账号入口
+- Feed / 稍后读 / 噪音箱入口显示未读计数，单源文章页在桌面和移动端都可回到订阅源列表，并显示当前源健康摘要、未读数、最近刷新/错误建议，也能复制阅读诊断、标记此源已读、刷新此源、编辑/删除订阅源、启停自动抓取、复制 Feed URL / 源诊断或打开站点，方便快速判断处理优先级
+- 大屏三段式布局，小屏单栏布局
+- 桌面键盘快捷操作：Feed / 稍后读 / 噪音箱 / 订阅源 / 设置 / 账号分区跳转、添加订阅源、导入 / 导出 OPML、上下导航、跳到下一篇 / 上一篇未读、列表首尾跳转、跳到首篇 / 末篇未读、打开、打开原文、复制原文链接、复制文章引用、复制 AI 总结、复制双语译文、复制 Markdown 阅读笔记、重试 AI、文章 / 订阅源搜索、双语翻译切换、字号/行距/正文宽度调节、收藏、稍后读并继续、处理到当前、当前列表标记已读、移入噪音箱并继续、读完下一篇、已读/未读、只看未读、继续阅读、切换队列排序、切换列表密度、折叠当前日期、刷新当前范围、同步待处理动作 / 拉取最新变化；快捷键帮助按导航、阅读处理、复制与 AI、排版、订阅同步分组，方便上手和复查
+- 增量同步、定时同步、本地离线阅读缓存，高频阅读动作与手动噪音箱整理都可离线排队；阅读列表顶部显示最近同步时间、待同步数量和待同步动作类型，同步状态可直接读出并点击触发同步，同步成功会反馈已拉取最新变化或已处理的待同步动作，同步失败时会说明待同步动作已保留在本机
+- 多端删除订阅源后会同步清理本地缓存；如果打开、刷新、删除、标记已读或使用来源筛选/搜索时命中已被服务端删除的订阅源，客户端会自动移除本地残留并恢复到可用阅读范围
+- 文章分页加载，长列表可继续加载历史文章并提示已加载数量，键盘下一篇和读完下一篇可在页尾自动衔接下一页；历史分页游标失效、离线或超时时会按加载历史场景给出可读提示
+- 阅读队列显示当前列表规模、未读数量、剩余未读耗时、折叠文章数量和继续阅读数量，并可从工作量条一键切到未读/继续阅读、加载历史或展开折叠日期，方便判断本轮处理成本
+- 搜索、未读筛选与空列表状态提供清空/查看全部/刷新等直接动作，搜索叠加来源/文件夹/未读等筛选无结果时可一键清空全部筛选；只看未读支持服务端分页与搜索
+- 重启后恢复上次阅读队列、来源/文件夹筛选和选中文章，减少每日继续阅读的上下文切换成本
+- 支持未读 / 继续阅读过滤并本地记住队列过滤偏好，过滤器可读出数量和当前状态，只看已读到一半的文章，方便恢复长文阅读现场
+- 列表与详情显示作者/署名、来源站点图标、本地估算阅读时长、继续阅读进度和详情页剩余阅读时间；文章卡片与详情页标题区可读出标题、来源、队列位置、已读/未读、稍后读/噪音箱和阅读进度，帮助先处理短文或预留长文阅读时间
+- Feed / 稍后读 / 噪音箱内支持按文件夹和来源快速筛选队列，筛选器可读出文章/未读数量和当前状态，筛选后刷新按钮、下拉刷新、空列表刷新、服务端分页和搜索都会优先作用于当前范围，离线/超时时会按刷新订阅源场景给出可读提示
+- 阅读队列支持新到旧 / 旧到新 / 短文优先 / 长文优先切换并本地记住偏好，排序控件可读出当前状态，适配追新、补旧和按可用时间清理 backlog
+- 文章列表支持舒适 / 紧凑密度切换并本地记住偏好，密度控件可读出当前状态，适合沉浸阅读和高效扫标题
+- 文章列表按发布日期分组，日期段可读出文章/未读数量，可单独标记已读，也可折叠/展开并本地记住折叠状态
+- 阅读队列进度、详情页已读 / 未读切换与“读完下一篇”，适合连续处理未读文章
+- 列表文章快捷操作：不用打开详情即可稍后读、已读/未读、移入/恢复噪音箱、打开原文、复制原文链接、重试 AI，误操作可撤销
+- 阅读进度保存与恢复，长文重新打开可回到上次位置，也可一键从头读；详情页进度条可读出当前进度与剩余时间
+- 文章搜索：在线时搜索服务端历史文章，离线时检索已缓存内容，支持空格分隔多关键词且每个关键词都必须命中，最多取前 8 个唯一关键词
+- 文章详情、AI 总结、沉浸式双语翻译、AI 处理中说明、失败/跳过原因与恢复建议、失败/跳过后单篇重试 AI、正文 HTML 渲染与正文链接外部打开，双语译文显示偏好可本地记住；详情页可复制原文链接、Markdown 引用、AI 总结、双语译文或带阅读进度/剩余时间的完整 Markdown 阅读笔记
+- 阅读排版偏好：字号、行距、行宽本地持久化，详情页可一键恢复默认排版
+- 订阅源添加（可省略 http/https 协议）、网站 URL 自动发现 RSS/Atom/JSON Feed、重复订阅 / 无法发现 Feed / 地址无效 / 保存后刷新失败 / 多端已删除等常见失败会给出可读提示，支持编辑、删除、文件夹分组、单源刷新、刷新全部
+- 订阅源列表支持按名称、文件夹和 URL 本地搜索，支持空格分隔多关键词并最多取前 8 个唯一关键词，可按未读、问题状态或名称排序且本地记住排序偏好，也可按未读、待处理、报错、待刷新、停用快速筛选并一键清空筛选；订阅源管理页显示文件夹、订阅源、有未读源和折叠源总览，并可一键展开折叠文件夹；订阅源卡片可读出文件夹、未读数、健康状态、最近刷新和错误原因，OPML 大量导入后也能快速定位和维护
+- 订阅源健康摘要：报错、待刷新、停用与未读积压，健康指标和状态可读出并可直接点击定位对应订阅源，定位后可从健康摘要一键回到全量订阅源；抓取失败时显示最近错误原因和超时 / DNS / 连接 / TLS / HTTP 状态等下一步建议，并可一键刷新当前搜索/筛选范围、重试报错/待刷新源，刷新反馈服务端已接收数量和跳过数量，常见刷新失败会解释为 HTTP 不可达或 Feed 无效等可读原因，批量或单源复制诊断信息
+- OPML 粘贴导入与一键复制导出，导入会保留嵌套文件夹和常见阅读器 `category` 分类，并解释 OPML 格式错误、文件过大、订阅过多、重复 / 无效订阅的跳过计数，反馈新增、跳过、已提交刷新数量和导入后刷新失败原因；导出可直接使用本地订阅缓存，同时写入嵌套文件夹和 `category`，离线时也能迁移到其他阅读器，服务端导出失败会给出可读提示
+- 已读 / 未读、收藏稍后读、手动移入/恢复噪音箱、按订阅源/文件夹批量标记已读、当前可见列表一次请求批量标记已读并支持撤销，批量范围变化时会提示同步刷新后重试、只看未读
+- AI 设置会提示 Key 是否就绪、清除 Key 后自动处理的影响、自动摘要 / 翻译开关状态，DeepSeek Provider 会以只读状态展示，输出语言保存前校验且常用语言可一键选择，设置保存失败会给出面向人的原因；服务端外观主题同步、本机主题覆盖、默认语言同步且自定义语言保存前校验、账号登出，并可一键复制不含密钥的诊断信息辅助排障，含同步状态与待同步动作明细、阅读范围、源健康、AI 输出语言和本机阅读偏好
 
-A few resources to get you started if this is your first Flutter project:
+## 本地启动
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+先启动服务端：
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+cd ../rss-copilot-server
+make dev
+```
+
+如果本机 Maven Wrapper 找不到 Java，可先设置 `JAVA_HOME` 指向本机 JDK。
+
+再启动客户端：
+
+```bash
+cd ../rss-copilot-client
+make dev
+```
+
+默认会启动 macOS 客户端；Android 设备或模拟器可用：
+
+```bash
+make run DEVICE=android
+```
+
+默认服务端地址：
+
+- macOS：`http://localhost:8080`
+- Android Emulator：`http://10.0.2.2:8080`；Android 真机可填写同一局域网内的服务端地址，例如 `http://192.168.1.10:8080`
+
+Android 包已内置网络权限，并允许个人本地调试 / 局域网自部署时使用明文 HTTP；远程公网自部署服务建议使用 HTTPS。
+
+客户端登录前会先请求 `GET /api/health` 并校验 `service=rss-copilot-server` 与最低 API 版本。如果服务端未启动、地址填错、反向代理未转发到 RSS Copilot，或服务端版本还没有健康检查契约，会优先提示服务端检查失败，而不是误报账号密码错误。
+
+默认预置账号与服务端 README 保持一致：
+
+- Email: `demo@rsscopilot.local`
+- Password: `changeme123`
+
+## 常用命令
+
+```bash
+make deps
+make test
+make smoke
+make lint
+make build
+make build-android
+```
+
+定向回归某个测试文件时可覆盖测试目标：
+
+```bash
+make unit-test UNIT_TEST_TARGETS="test/core/source_health_test.dart"
+make widget-test WIDGET_TEST_TARGETS="test/widgets/home_shortcuts_test.dart" ARGS="--plain-name 'source health panel retries retryable issue sources'"
+make smoke
+make web-test
+```
+
+`make smoke` 会跑客户端个人阅读主链路验收，覆盖登录地址规范化、健康检查、登录、同步启动包、加订阅源、刷新同步、阅读详情、收藏、阅读进度、已读、OPML 导出/导入和本地缓存落盘。
+
+当前 Makefile 在完整 Xcode 可用时默认构建 macOS 包；如果当前机器没有 `xcodebuild`，`make build` 会自动改为构建 Web 预览，避免快速验收被本机 Xcode 环境阻塞。Android 包使用 `make build-android`，需要本机已安装 Android SDK，并设置 `ANDROID_HOME` / `ANDROID_SDK_ROOT`，或使用 Android Studio 默认 SDK 路径。
+
+如需强制构建 macOS 包，可使用：
+
+```bash
+make build-macos
+```
+
+如需在当前机器没有完整 Xcode / Android SDK 时做快速界面预览，可使用：
+
+```bash
+make run-web
+make build-web
+```
+
+Web 目标用于本地调试预览，会优先通过浏览器 IndexedDB 持久化登录态、阅读偏好和离线缓存；如果当前浏览器环境禁用 IndexedDB，会自动退回内存缓存以保证首屏可用。Mac / Android 客户端使用系统应用数据目录持久化。
+
+Web 或桌面预览可通过 Dart define 预填登录页服务端地址和邮箱：
+
+```bash
+make run-web DART_DEFINES="--dart-define=RSS_COPILOT_DEFAULT_BASE_URL=http://127.0.0.1:18080 --dart-define=RSS_COPILOT_DEFAULT_EMAIL=demo@rsscopilot.local"
+```
+
+## 本地数据
+
+客户端使用 Sembast 做本地缓存，保存：
+
+- 登录 Session
+- 服务端设置快照
+- 订阅源
+- 订阅源文件夹
+- 文章列表与详情
+- 文章搜索结果列表
+- 稍后读收藏状态
+- 阅读进度
+- 阅读器和订阅源列表偏好
+- 阅读日期分组和订阅源文件夹折叠状态
+- 离线待读/收藏/噪音箱/进度同步队列
+- 同步游标
+
+离线状态下可以继续阅读已同步文章；打开文章、已读/未读、稍后读收藏和阅读进度会先本地生效并排队，恢复在线后自动同步。OPML 导出可直接使用本地订阅缓存。新增订阅、刷新、OPML 导入、AI 设置等需要服务端参与的操作仍需在线完成。

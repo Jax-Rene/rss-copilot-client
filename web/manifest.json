@@ -1,11 +1,11 @@
 {
-    "name": "rss_copilot_client",
-    "short_name": "rss_copilot_client",
+    "name": "RSS Copilot",
+    "short_name": "RSS Copilot",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#111417",
+    "theme_color": "#256D85",
+    "description": "Personal AI-assisted RSS reader.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,6 +1,7 @@
 enum AppSection {
   feed,
   noise,
+  saved,
   sources,
   sourceEntries,
   settings,
@@ -10,6 +11,7 @@ enum AppSection {
     return switch (this) {
       AppSection.feed => 'Feed 流',
       AppSection.noise => '噪音箱',
+      AppSection.saved => '稍后读',
       AppSection.sources => '订阅源',
       AppSection.sourceEntries => '订阅源文章',
       AppSection.settings => '设置',
@@ -20,9 +22,9 @@ enum AppSection {
 
 enum SettingsSection {
   ai('AI'),
-  appearance('Appearance'),
-  feeds('Feeds'),
-  about('About');
+  appearance('外观'),
+  feeds('订阅'),
+  about('关于');
 
   const SettingsSection(this.label);
 

@@ -135,6 +135,17 @@ class FeedSettings {
       'refreshPolicyDescription': refreshPolicyDescription,
     };
   }
+
+  FeedSettings copyWith({
+    String? defaultLanguage,
+    String? refreshPolicyDescription,
+  }) {
+    return FeedSettings(
+      defaultLanguage: defaultLanguage ?? this.defaultLanguage,
+      refreshPolicyDescription:
+          refreshPolicyDescription ?? this.refreshPolicyDescription,
+    );
+  }
 }
 
 class AccountSettings {

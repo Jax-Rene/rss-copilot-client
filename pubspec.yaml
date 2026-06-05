@@ -1,5 +1,5 @@
 name: rss_copilot_client
-description: "A new Flutter project."
+description: "Flutter client for RSS Copilot, a personal AI-assisted RSS reader."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -42,7 +42,8 @@ dependencies:
   sembast: ^3.8.6
   url_launcher: ^6.3.2
   flutter_html: ^3.0.0
-
+  html: ^0.15.6
+  sembast_web: ^2.4.4+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
